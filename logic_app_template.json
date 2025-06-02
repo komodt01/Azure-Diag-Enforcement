@@ -1,0 +1,21 @@
+
+{
+  "$schema": "https://schema.management.azure.com/schemas/2016-06-01/Microsoft.Logic.json",
+  "contentVersion": "1.0.0.0",
+  "parameters": {},
+  "resources": [
+    {
+      "type": "Microsoft.Logic/workflows",
+      "apiVersion": "2019-05-01",
+      "name": "alert-on-noncompliant-resource",
+      "location": "eastus",
+      "properties": {
+        "definition": {
+          "actions": {},
+          "triggers": {},
+          "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json"
+        }
+      }
+    }
+  ]
+}

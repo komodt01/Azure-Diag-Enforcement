@@ -1,0 +1,25 @@
+
+{
+  "properties": {
+    "displayName": "Enforce Diagnostic Settings on Resource Groups",
+    "policyType": "Custom",
+    "mode": "All",
+    "parameters": {},
+    "policyRule": {
+      "if": {
+        "field": "type",
+        "equals": "Microsoft.Resources/subscriptions/resourceGroups"
+      },
+      "then": {
+        "effect": "auditIfNotExists",
+        "details": {
+          "type": "Microsoft.Insights/diagnosticSettings",
+          "existenceCondition": {
+            "field": "Microsoft.Insights/diagnosticSettings/logs.enabled",
+            "equals": "true"
+          }
+        }
+      }
+    }
+  }
+}
