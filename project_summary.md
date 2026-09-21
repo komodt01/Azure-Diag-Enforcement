@@ -1,65 +1,47 @@
+# Project Summary – Azure Diagnostic Enforcement
 
-## Problem Statement
-Organizations often lack consistent enforcement of diagnostic logging in Azure, resulting in blind spots.
+## Business Problem
 
-## Project Definition
-This solution enforces diagnostic settings using Azure Policy and validates compliance with Python SDK and automated alerts via Logic Apps.
+Security monitoring depends on Azure resources producing the telemetry required for investigation, incident response, and audit.
 
-## Goals
-- Enforce logging compliance
-- Automate alerting
-- Provide multi-cloud comparability
+As cloud environments grow, manually maintained diagnostic settings can become inconsistent or be removed over time, creating security visibility gaps.
+
+## Project Objective
+
+This project explores how diagnostic configuration can be evaluated through policy and programmatic inspection rather than relying entirely on manual review.
+
+The proof-of-concept focuses on the foundation of a broader diagnostic-governance control.
+
+## Implemented Components
+
+The repository includes:
+
+- A custom Azure Policy using `auditIfNotExists` to identify resource groups without the expected diagnostic logging configuration
+- A Python script using the Azure Monitor SDK to enumerate diagnostic settings for a specified Azure resource
+- A Logic App resource template representing a starting point for a future noncompliance workflow
+- Terraform configuration for the Azure resource group supporting the project
+
+The current implementation provides configuration evaluation and inspection. It does not implement automatic remediation or a completed Logic App alerting workflow.
+
+## Security Architecture Value
+
+The project demonstrates an important distinction between configuring logging and governing logging as a security control.
+
+An enterprise implementation would need to address:
+
+- Continuous compliance evaluation
+- Configuration drift
+- Least-privilege remediation
+- Failed-remediation handling
+- Exception governance
+- Audit evidence
+- Telemetry-health validation
+- Operational ownership
+
+The broader architecture is documented in the accompanying technical case study.
 
 ## Outcome
-Deployable enforcement mechanism with automated compliance validation.
-# Technologies and Control Components
 
-## Azure Policy
+The project demonstrates a proof-of-concept for evaluating Azure diagnostic configuration and establishes the architectural foundation for a more comprehensive diagnostic-enforcement capability.
 
-**Purpose:** Evaluate Azure resources against defined configuration requirements.
-
-**Used in this project:**  
-The custom policy uses `auditIfNotExists` to evaluate whether diagnostic settings with logging enabled exist for Azure resource groups.
-
-This is an audit control. The policy identifies noncompliance but does not automatically remediate the resource.
-
-## Azure Monitor SDK for Python
-
-**Purpose:** Programmatically inspect Azure monitoring configuration.
-
-**Used in this project:**  
-`validate_sdk.py` uses `DefaultAzureCredential` and `MonitorManagementClient` to retrieve and display diagnostic settings associated with a specified Azure resource.
-
-The script provides configuration visibility; it is not a complete compliance-validation or remediation engine.
-
-## Azure Logic Apps
-
-**Purpose:** Provide workflow automation that can support alerting, escalation, and integration with operational processes.
-
-**Used in this project:**  
-`logic_app_template.json` defines the Logic App workflow resource `alert-on-noncompliant-resource`.
-
-The current template does not contain implemented triggers or actions. It represents a starting point for a future noncompliance notification workflow rather than a completed alerting capability.
-
-## Terraform
-
-**Purpose:** Provide repeatable infrastructure provisioning through Infrastructure as Code.
-
-**Used in this project:**  
-`main.tf` configures the AzureRM provider and creates the resource group used by the project.
-
-The repository does not contain Terraform deployment of the policy, Logic App, diagnostic settings, or a broader monitoring environment.
-
-## Security Architecture Relationship
-
-These components represent different parts of a potential diagnostic-governance control:
-
-**Terraform → Supporting infrastructure**
-
-**Azure Policy → Configuration evaluation**
-
-**Azure SDK → Programmatic inspection**
-
-**Logic Apps → Potential workflow and escalation integration**
-
-A production implementation would require these capabilities to be integrated with defined policy scope, identity and permissions, remediation, exception governance, telemetry validation, and operational ownership.
+The primary security objective is **telemetry assurance**: reducing the risk that resources operate without the logging required for security monitoring and investigation.
